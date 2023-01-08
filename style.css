@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: cursive;
+}
+
+body {
+    background-color: #434242;
+    overflow: hidden;
+}
+
+.memoryGame {
+    width: 475px;
+    height: 475px;
+    background-color: #222222;
+    color: white;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 50px;
+    grid-row-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+}
+
+.memoryGame .memoryCard {
+    width: 100px;
+    height: 100px;
+    background-color: #434242;
+    display: grid;
+    place-items: center;
+    font-size: 75px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.memoryGame .memoryCard:hover {
+    transform: scale(1.2);
+    background-color: white !important;
+    color: black !important;
+}
+
+.startButton,
+.howToPlay-btn {
+    border: none;
+    color: white;
+    background-color: #222222;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 15pt;
+    cursor: pointer;
+}
+
+.startButton {
+    position: absolute;
+    left: 50%;
+    top: 2%;
+    transform: translateX(-50%);
+    transition: opacity 250ms;
+}
+
+.startButton:hover {
+    opacity: 0.8;
+}
+
+.gameArea {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 25px;
+}
+
+.modalBackground {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #ccc;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0.5;
+    display: none;
+}
+
+.modalContent {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 25%;
+    background-color: #222222;
+    padding: 15px;
+    color: white;
+    border-radius: 15px;
+    display: none;
+    z-index: 2;
+    box-shadow: 15px black 15px black 15px black 15px black;
+}
+
+.modalContent>*:not(hr) {
+    padding: 10px;
+}
+
+.modalContent .closeButton {
+    position: absolute;
+    right: 2%;
+    top: 8%;
+    transform: scale(1.5);
+    cursor: pointer;
+}

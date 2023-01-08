@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div style="z-index: 2; margin: 15px; color: white; font-size: 20pt; display: inline-block; position: absolute;">
+        <div class="score">Score: <span class="scoreResult">0</span></div>
+        <div class="level">Level: <span class="levelResult">1</span></div>
+        <button onclick="howPlay()" class="howToPlay-btn">How do i play?</button>
+    </div>
+    <div class="gameArea">
+        <button onclick="startGame(this)" class="startButton">START GAME</button>
+        <ul class="memoryGame">
+            <li index="0" class="memoryCard">1</li>
+            <li index="1" class="memoryCard">2</li>
+            <li index="2" class="memoryCard">3</li>
+            <li index="3" class="memoryCard">4</li>
+            <li index="4" class="memoryCard">5</li>
+            <li index="5" class="memoryCard">6</li>
+            <li index="6" class="memoryCard">7</li>
+            <li index="7" class="memoryCard">8</li>
+            <li index="8" class="memoryCard">9</li>
+        </ul>
+        <h4 style="color: white; font-family: sans-serif; font-size: 20px;" class="gameInfoText">Press the button to
+            start the game</h4>
+    </div>
+
+    <div class="modalBackground"></div>
+
+    <div class="modalContent">
+        <div onclick="closeModal()" class="closeButton">❌</div>
+        <h2></h2>
+        <hr>
+        <p></p>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
