@@ -2,7 +2,7 @@ let isStartedGame = false;
 let isFinishedProcess = false;
 const gameInfoText = document.querySelector("h4.gameInfoText");
 let cardData = [];
-const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const rand = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 const wait = ms => new Promise(r => setTimeout(r, ms));
 let CARD_SELECT_COUNT = 2;
 let score = 0;
@@ -74,12 +74,14 @@ function shuffleCard() {
 
 let cardIndexDesk = 0;
 
-function cardClick(card) {
+async function cardClick(card) {
     if (!isStartedGame || !isFinishedProcess) return;
     const cardIndex = card.getAttribute("index");
     const cardDataIndex = cardData[cardIndexDesk];
     new Audio("./sounds/audio.mp3").play();
     if (cardDataIndex != cardIndex) {
+        card.style["background-color"] = "red";
+        await wait(500);
         return openModal({ title: "Wrong choice", content: `The right combination: ${cardData.map(i => i + 1).join(", ")}<br>Max score: ${score}` })
     }
     cardIndexDesk++;
