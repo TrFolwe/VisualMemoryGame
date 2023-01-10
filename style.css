@@ -44,7 +44,8 @@ body {
 }
 
 .startButton,
-.howToPlay-btn {
+.howToPlay-btn,
+.continue-btn {
     border: none;
     color: white;
     background-color: #222222;
@@ -52,6 +53,13 @@ body {
     border-radius: 25px;
     font-size: 15pt;
     cursor: pointer;
+}
+
+.continue-btn {
+    background-color: #434242 !important;
+    position: absolute;
+    right: 2%;
+    bottom: 6%;
 }
 
 .startButton {

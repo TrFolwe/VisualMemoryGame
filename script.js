@@ -11,10 +11,21 @@ const CARD_DEFAULT_BACKGROUND_COLOR = getComputedStyle(document.querySelector("l
 
 const isModalState = () => getComputedStyle(document.querySelector(".modalContent")).display !== "none";
 
+window.addEventListener("keydown", event => {
+    if (isModalState) {
+        if (event.key === "Escape") closeModal();
+        else if (event.key === "Enter") continueGame();
+    }
+});
+
 document.querySelectorAll("li.memoryCard").forEach(card => card.addEventListener("click", () => cardClick(card)))
 
 async function startGame(e) {
-    if (e.innerHTML === "RESTART GAME") return resetGame();
+    if (e.innerHTML === "RESTART GAME") {
+        resetGame(true);
+        await wait(500);
+        startGame(e);
+    }
     if (!isStartedGame && !isModalState()) {
         isStartedGame = true;
         await startCounter();
@@ -34,11 +45,15 @@ setInterval(() => { //score set
     document.querySelector(".levelResult").innerHTML = level;
 }, 1000 / 60);
 
-function openModal({ title, content }) {
+function openModal({ title, content, type }) {
     $(".modalBackground, .modalContent").fadeIn(250)
     document.querySelectorAll(".modalBackground, .modalContent").forEach(i => i.style.display = "block");
     document.querySelector(".modalContent h2").innerHTML = title;
     document.querySelector(".modalContent p").innerHTML = content;
+    if (type === "modal:right_choice" || type === "modal:wrong_choice") {
+        const nextButton = `<button onclick="continueGame()" class="continue-btn">${type === "modal:right_choice" ? "Continue" : "Try again"}</button>`;
+        document.querySelector(".modalContent").innerHTML += nextButton;
+    }
 }
 
 function shuffleCard() {
@@ -62,7 +77,7 @@ function shuffleCard() {
     });
 
     async function cardLight(cardElement) {
-        await wait(2000);
+        //await wait(1000);
         cardElement.style["background-color"] = "white";
         cardElement.style["color"] = "black";
         new Audio("./sounds/audio.mp3").play();
@@ -79,17 +94,29 @@ async function cardClick(card) {
     const cardIndex = card.getAttribute("index");
     const cardDataIndex = cardData[cardIndexDesk];
     new Audio("./sounds/audio.mp3").play();
+    if (card.hasAttribute("selected")) return;
+    card.setAttribute("selected", "true");
+
     if (cardDataIndex != cardIndex) {
         card.style["background-color"] = "red";
         await wait(500);
-        return openModal({ title: "Wrong choice", content: `The right combination: ${cardData.map(i => i + 1).join(", ")}<br>Max score: ${score}` })
+        return openModal({
+            title: "Wrong choice",
+            content: `The right combination: ${cardData.map(i => i + 1).join(", ")}<br>Max score: ${score}`,
+            type: "modal:wrong_choice"
+        });
     }
+
     cardIndexDesk++;
     card.style["background-color"] = "green";
     if (cardIndexDesk === cardData.length) {
         score += 5;
         if ((score % 10 === 0) && score !== 0) level++;
-        openModal({ title: "Well done <3", content: `The right combination: ${cardData.map(i => i + 1).join(", ")}<br>Your score: ${score}${((score % 10 === 0) && score !== 0) ? '<br>you have leveled up' : ''}` });
+        openModal({
+            title: "Well done <3",
+            content: `The right combination: ${cardData.map(i => i + 1).join(", ")}<br>Your score: ${score}${((score % 10 === 0) && score !== 0) ? '<br>you have leveled up' : ''}`,
+            type: "modal:right_choice"
+        });
     }
 }
 
@@ -103,7 +130,10 @@ function resetGame(isLosed = false) {
         score = 0;
     }
     gameInfoText.innerHTML = "Please game start";
-    document.querySelectorAll("li.memoryCard").forEach(card => card.style["background-color"] = CARD_DEFAULT_BACKGROUND_COLOR)
+    document.querySelectorAll("li.memoryCard").forEach(card => {
+        card.style["background-color"] = CARD_DEFAULT_BACKGROUND_COLOR;
+        if (card.hasAttribute("selected")) card.removeAttribute("selected");
+    })
 }
 
 function startCounter() {
@@ -126,4 +156,11 @@ const closeModal = () => {
     if (modalTitle === "Wrong choice") resetGame(true);
     else if (modalTitle !== "How do play?") resetGame();
 }
-const howPlay = () => openModal({ title: "How do play?", content: "It is an intelligence game played by correctly matching the combinations given to you." })
+
+async function continueGame() {
+    closeModal();
+    await wait(500);
+    startGame(document.querySelector(".startButton"));
+}
+
+const howPlay = () => openModal({ title: "How do play?", content: "It is an intelligence game played by correctly matching the combinations given to you.", type: "modal:help_play" })
