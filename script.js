@@ -38,9 +38,10 @@ setInterval(() => { //score set
     document.querySelector(".scoreResult").innerHTML = score;
     CARD_SELECT_COUNT = level * 2;
     const startButton = document.querySelector(".startButton");
-    if (isStartedGame && isFinishedProcess) startButton.innerHTML = "RESTART GAME"
+    if (isStartedGame && isFinishedProcess) {
+        if (startButton.innerHTML !== "RESTART GAME") startButton.innerHTML = "RESTART GAME"
+    }
     else if (startButton.innerHTML !== "START GAME") startButton.innerHTML = "START GAME";
-
 
     document.querySelector(".levelResult").innerHTML = level;
 }, 1000 / 60);
