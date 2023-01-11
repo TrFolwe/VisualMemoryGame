@@ -35,6 +35,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.5s;
+    user-select: none;
 }
 
 .memoryGame .memoryCard:hover {
